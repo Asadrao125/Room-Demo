@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewContact = binding!!.recyclerViewContact
         recyclerViewContact.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+            LinearLayoutManager(this)
         recyclerViewContact.setHasFixedSize(true)
 
         database.contactDao().getAllContact().observe(this, {
