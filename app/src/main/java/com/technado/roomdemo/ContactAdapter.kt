@@ -31,7 +31,7 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
             GlobalScope.launch {
                 MainActivity.database.contactDao().deleteContact(list.get(position))
             }
-            notifyItemChanged(position)
+            //notifyDataSetChanged()
         })
 
         holder.itemView.setOnClickListener(View.OnClickListener {
@@ -72,21 +72,19 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
         btnUpdate.setOnClickListener(View.OnClickListener {
             val name = edtName.text.toString()
             val phone = edtPhone.text.toString()
-
-            if (name.isEmpty()) {
-                Toast.makeText(context, "Name Required", Toast.LENGTH_SHORT).show()
-            } else if (phone.isEmpty()) {
-                Toast.makeText(context, "Phone Required", Toast.LENGTH_SHORT).show()
-            } else {
+            if (!name.isEmpty() && !phone.isEmpty()) {
                 GlobalScope.launch {
                     MainActivity.database.contactDao()
                         .updateContact(Contact(contact.id, name, phone))
                 }
-                notifyItemChanged(position)
+                list.get(position).name = name
+                list.get(position).phone = phone
+                //notifyItemChanged(position, list.size)
                 alertDialog.dismiss()
+            } else {
+                Toast.makeText(context, "Name Required", Toast.LENGTH_SHORT).show()
             }
         })
-
         alertDialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
     }

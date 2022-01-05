@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class Contact(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
-    val name: String,
-    val phone: String,
+    var name: String,
+    var phone: String,
 )
