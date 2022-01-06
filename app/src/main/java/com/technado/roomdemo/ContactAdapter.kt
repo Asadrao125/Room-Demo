@@ -64,8 +64,10 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
         val btnUpdate: Button = dialogView.findViewById(R.id.btnUpdate)
         val edtName: EditText = dialogView.findViewById(R.id.edtName)
         val edtPhone: EditText = dialogView.findViewById(R.id.edtPhone)
+        val tvTitle: TextView = dialogView.findViewById(R.id.tvTitle)
 
         edtName.setText(contact.name)
+        tvTitle.text = "Update - " + contact.name
         edtPhone.setText(contact.phone)
 
         btnUpdate.setOnClickListener(View.OnClickListener {
