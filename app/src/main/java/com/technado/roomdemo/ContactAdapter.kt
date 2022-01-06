@@ -12,22 +12,30 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.technado.roomdemo.databinding.ItemContactBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ContactAdapter(var context: Context, var list: List<Contact>) :
     RecyclerView.Adapter<ContactAdapter.MyViewHolder>() {
+    var binding: ItemContactBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.item_contact, parent, false)
-        return MyViewHolder(view)
+        binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.item_contact,
+            parent,
+            false
+        )
+        return MyViewHolder(binding!!.root)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.tvName.text = list[position].name
-        holder.tvPhone.text = list[position].phone
-        holder.btnDelete.setOnClickListener(View.OnClickListener {
+        binding?.tvName?.text = list[position].name
+        binding?.tvPhone?.text = list[position].phone
+        binding?.btnDelete?.setOnClickListener(View.OnClickListener {
             GlobalScope.launch {
                 MainActivity.database.contactDao().deleteContact(list.get(position))
             }
@@ -43,17 +51,7 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
         return list.size
     }
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvName: TextView
-        var tvPhone: TextView
-        var btnDelete: Button
-
-        init {
-            tvName = itemView.findViewById(R.id.tvName)
-            tvPhone = itemView.findViewById(R.id.tvPhone)
-            btnDelete = itemView.findViewById(R.id.btnDelete)
-        }
-    }
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun SettingsDialog(activity: Activity, contact: Contact, position: Int) {
         val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(activity)
