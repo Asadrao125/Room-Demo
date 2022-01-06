@@ -31,6 +31,7 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
             GlobalScope.launch {
                 MainActivity.database.contactDao().deleteContact(list.get(position))
             }
+            notifyItemChanged(position)
         })
 
         holder.itemView.setOnClickListener(View.OnClickListener {
@@ -80,6 +81,7 @@ class ContactAdapter(var context: Context, var list: List<Contact>) :
                 }
                 list.get(position).name = name
                 list.get(position).phone = phone
+                notifyItemChanged(position)
                 alertDialog.dismiss()
             } else {
                 Toast.makeText(context, "Name Required", Toast.LENGTH_SHORT).show()

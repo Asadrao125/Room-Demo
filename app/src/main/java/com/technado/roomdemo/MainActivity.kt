@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     var binding: MainActivityBinding? = null
     lateinit var recyclerViewContact: RecyclerView
+    lateinit var contactList: List<Contact>
 
     companion object {
         lateinit var database: ContactDatabase
@@ -30,14 +31,13 @@ class MainActivity : AppCompatActivity() {
             "contactDB"
         ).build()
 
+        contactList = ArrayList()
         recyclerViewContact = binding!!.recyclerViewContact
         recyclerViewContact.layoutManager =
             LinearLayoutManager(this)
         recyclerViewContact.setHasFixedSize(true)
 
-        database.contactDao().getAllContact().observe(this, {
-            recyclerViewContact.adapter = ContactAdapter(this, it)
-        })
+        getContactList()
 
         binding?.btnSave?.setOnClickListener(View.OnClickListener {
             val name = binding?.edtName?.text.toString()
@@ -54,10 +54,16 @@ class MainActivity : AppCompatActivity() {
                 binding?.edtName?.text = null
                 binding?.edtPhone?.text = null
 
-                database.contactDao().getAllContact().observe(this, {
-                    recyclerViewContact.adapter = ContactAdapter(this, it)
-                })
+                getContactList()
             }
         })
+    }
+
+    fun getContactList() {
+        val t = Thread(Runnable() {
+            contactList = database.contactDao().getAllContact()
+            recyclerViewContact.adapter = ContactAdapter(this, contactList)
+        })
+        t.start()
     }
 }
