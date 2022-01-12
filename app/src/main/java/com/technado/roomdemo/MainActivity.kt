@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
             "contactDB"
         ).build()
 
-        contactList = ArrayList()
+        contactList = listOf()
         recyclerViewContact = binding!!.recyclerViewContact
         recyclerViewContact.layoutManager =
             LinearLayoutManager(this)
