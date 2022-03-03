@@ -1,6 +1,5 @@
 package com.technado.roomdemo
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
